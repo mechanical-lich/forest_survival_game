@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ccsledwqepd2n"]
+
+[ext_resource type="Script" path="res://Scripts/Item/item_data.gd" id="1_lf0un"]
+[ext_resource type="Texture2D" uid="uid://d2hwiufdurgug" path="res://Assets/Inventory/lumber.png" id="2_j3urm"]
+
+[resource]
+script = ExtResource("1_lf0un")
+name = "Lumber"
+description = "Used to build or to burn.  Comes from logs."
+stackable = true
+texture = ExtResource("2_j3urm")

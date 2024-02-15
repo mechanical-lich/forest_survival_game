@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://ca8baq3d3d1sj"]
+
+[ext_resource type="Script" path="res://Scripts/lumber.gd" id="1_08s2a"]
+[ext_resource type="Texture2D" uid="uid://vn2x1xbon2jb" path="res://Assets/Models/props/trees_C.jpg" id="1_008tc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7rqen"]
+friction = 0.5
+rough = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pkpkp"]
+size = Vector3(1.5, 3.454, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pdkls"]
+size = Vector3(1, 3, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b12oa"]
+albedo_texture = ExtResource("1_008tc")
+
+[node name="Lumber" type="RigidBody3D"]
+transform = Transform3D(1, 0, 3.82137e-15, 3.82137e-15, 4.37114e-08, -1, 0, 1, 4.37114e-08, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+mass = 0.62
+physics_material_override = SubResource("PhysicsMaterial_7rqen")
+max_contacts_reported = 10
+contact_monitor = true
+script = ExtResource("1_08s2a")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, -7.30144e-30, 0, 1, 0, 0, 0, 1, -1.01328e-06, 6.77704e-05, 0.000870109)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.25, 0, -1.82536e-30, -3.04131e-32, 0.25, 0, -1.3294e-39, 0, 0.25, 0.00159264, -0.0110474, -0.00395203)
+shape = SubResource("BoxShape3D_pkpkp")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.25, 0, -1.82536e-30, -3.04131e-32, 0.25, 0, -1.3294e-39, 0, 0.25, 0, -0.0083313, -0.00395203)
+shape = SubResource("BoxShape3D_pdkls")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CollisionShape3D2"]
+transform = Transform3D(1, 0, -7.30144e-30, -3.64957e-31, 1, 0, -1.59528e-38, 0, 1, 2.08165e-12, 0, 0)
+material_override = SubResource("StandardMaterial3D_b12oa")
+size = Vector3(1, 3, 0.5)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

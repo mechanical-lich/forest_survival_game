@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://d4is63h36pjxc"]
+
+[ext_resource type="Script" path="res://Scripts/Item/item_data.gd" id="1_7s8kx"]
+[ext_resource type="Texture2D" uid="uid://dk5ua43dmyyce" path="res://Assets/Inventory/axe.png" id="2_urcqc"]
+
+[resource]
+script = ExtResource("1_7s8kx")
+name = "Axe"
+description = "Chops wood really good."
+stackable = false
+texture = ExtResource("2_urcqc")

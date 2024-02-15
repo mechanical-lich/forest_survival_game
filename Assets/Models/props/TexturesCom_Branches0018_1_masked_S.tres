@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c5tgimvfymghj"]
+
+[ext_resource type="Texture2D" uid="uid://ciwf4lwujg50i" path="res://Assets/Models/props/trees_R2.png" id="1_8fuf2"]
+
+[resource]
+resource_name = "TexturesCom_Branches0018_1_masked_S"
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_8fuf2")
+roughness = 0.5
