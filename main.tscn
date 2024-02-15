@@ -1,6 +1,5 @@
-[gd_scene load_steps=28 format=3 uid="uid://d0ovvba58xass"]
+[gd_scene load_steps=38 format=3 uid="uid://d0ovvba58xass"]
 
-[ext_resource type="Texture2D" uid="uid://42lr54of4j8j" path="res://Assets/Textures/Grass.jpg" id="1_1btcp"]
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="1_37ngr"]
 [ext_resource type="PackedScene" uid="uid://8qgn1a7jh68g" path="res://Scenes/Crafting/Crafting.tscn" id="4_im4ls"]
 [ext_resource type="PackedScene" uid="uid://djakcq3842744" path="res://Scenes/player.tscn" id="5_ns258"]
@@ -17,6 +16,17 @@
 [ext_resource type="PackedScene" uid="uid://c5gpkagi1c6i8" path="res://Scenes/plant2.tscn" id="14_g62n7"]
 [ext_resource type="Script" path="res://Scripts/Inventory/InventoryInterface.gd" id="14_sjerb"]
 [ext_resource type="PackedScene" uid="uid://mp3o0fln7yat" path="res://Scenes/lantern.tscn" id="17_iln2c"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="18_fevhn"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="19_c4d8q"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="20_kbkgm"]
+[ext_resource type="Texture2D" uid="uid://bx5kvmw1a4v3a" path="res://Assets/Textures/main_slot0_albedo_bump.png" id="21_07pev"]
+[ext_resource type="Texture2D" uid="uid://d054430uqou52" path="res://Assets/Textures/main_slot1_albedo_bump.png" id="22_a03jm"]
+[ext_resource type="Texture2D" uid="uid://gs8qmdlrxxdq" path="res://Assets/Textures/main_slot0_normal_roughness.png" id="22_dgr3h"]
+[ext_resource type="Texture2D" uid="uid://baa005w7xvitn" path="res://Assets/Textures/main_slot2_albedo_bump.png" id="23_j8yui"]
+[ext_resource type="Texture2D" uid="uid://ckpo3svc8fblt" path="res://Assets/Textures/main_slot3_albedo_bump.png" id="24_any3l"]
+[ext_resource type="Texture2D" uid="uid://dw2g6p3t7rk0" path="res://Assets/Textures/main_slot1_normal_roughness.png" id="26_n6eah"]
+[ext_resource type="Texture2D" uid="uid://cxqatahdciqkg" path="res://Assets/Textures/main_slot2_normal_roughness.png" id="27_8h3r3"]
+[ext_resource type="Texture2D" uid="uid://bybivybji6bl6" path="res://Assets/Textures/main_slot3_normal_roughness.png" id="28_otc1c"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gxnhk"]
 sky_top_color = Color(0.145098, 0.211765, 0.419608, 1)
@@ -32,9 +42,10 @@ sky = SubResource("Sky_rfyi8")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v4xps"]
-albedo_texture = ExtResource("1_1btcp")
-uv1_triplanar = true
+[sub_resource type="Resource" id="Resource_w1k8t"]
+script = ExtResource("20_kbkgm")
+mode = 0
+textures = [[ExtResource("21_07pev"), ExtResource("22_a03jm"), ExtResource("23_j8yui"), ExtResource("24_any3l")], [ExtResource("22_dgr3h"), ExtResource("26_n6eah"), ExtResource("27_8h3r3"), ExtResource("28_otc1c")]]
 
 [sub_resource type="Resource" id="Resource_f7rtt"]
 script = ExtResource("10_xvf67")
@@ -127,19 +138,18 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Crafting" parent="UI" node_paths=PackedStringArray("player") instance=ExtResource("4_im4ls")]
-offset_left = 364.0
-offset_top = 227.0
-offset_right = -342.0
-offset_bottom = -252.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -163.5
+offset_top = -90.0
+offset_right = 163.5
+offset_bottom = 90.0
 player = NodePath("../../Player")
 
 [node name="Map" type="Node3D" parent="."]
-
-[node name="Floor" type="CSGBox3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1, 2.08165e-12)
-material_override = SubResource("StandardMaterial3D_v4xps")
-use_collision = true
-size = Vector3(1000, 1, 1000)
 
 [node name="Trees" type="Node3D" parent="Map"]
 
@@ -287,13 +297,39 @@ transform = Transform3D(-0.794383, 0, -0.607417, 0, 1, 0, 0.607417, 0, -0.794383
 [node name="Tree48" parent="Map/Trees" instance=ExtResource("8_qksp1")]
 transform = Transform3D(-0.794383, 0, -0.607417, 0, 1, 0, 0.607417, 0, -0.794383, -44.9765, 2.08165e-12, -67.9523)
 
+[node name="Tree50" parent="Map/Trees" instance=ExtResource("8_qksp1")]
+transform = Transform3D(-0.794383, 0, -0.607417, 0, 1, 0, 0.607417, 0, -0.794383, -37.7859, -2.01037, -67.9523)
+
+[node name="Tree49" parent="Map/Trees" instance=ExtResource("8_qksp1")]
+transform = Transform3D(0.704597, 0, -0.709608, 0, 1, 0, 0.709608, 0, 0.704597, -60.0543, -4.52036, 44.6408)
+
+[node name="Floor" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1, 2.08165e-12)
+script = ExtResource("18_fevhn")
+centered = true
+_terrain_data = ExtResource("19_c4d8q")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_w1k8t")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
 [node name="Player" parent="." instance=ExtResource("5_ns258")]
 floor_max_angle = 1.0472
 DefaultRightHandSlot = ExtResource("7_fa15g")
 Inventory = SubResource("Resource_t4a26")
 
 [node name="sleeping_bag" type="MeshInstance3D" parent="."]
-transform = Transform3D(3.31632e-08, 0, 0.185462, 0, 0.185462, 0, -0.185462, 0, 3.31632e-08, -6.98341, -0.429193, 0.016)
+transform = Transform3D(3.31632e-08, 0, 0.185462, 0, 0.185462, 0, -0.185462, 0, 3.31632e-08, -6.98341, -0.66669, 0.016)
 mesh = SubResource("ArrayMesh_vhjv3")
 skeleton = NodePath("")
 

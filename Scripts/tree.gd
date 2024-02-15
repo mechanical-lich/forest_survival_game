@@ -2,6 +2,8 @@ extends Node3D
 class_name ChoppableTree
 
 var Log = load("res://Scenes/log.tscn")
+@onready var area_3d = $Area3D
+@onready var ray_cast_3d = $StaticBody3D/RayCast3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,6 +12,10 @@ func _ready():
 	var treeOption = rng.randi_range(1, 4)
 	rotate_y(deg_to_rad(rng.randi_range(0,360)))
 	get_node("Mesh%d"%treeOption).show()
+	
+	ray_cast_3d.force_raycast_update()
+	if ray_cast_3d.is_colliding():
+		position = ray_cast_3d.get_collision_point()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

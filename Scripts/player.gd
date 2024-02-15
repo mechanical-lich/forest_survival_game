@@ -124,13 +124,32 @@ func _physics_process(delta):
 			if animationPlayer.current_animation != "idle":
 				animationPlayer.play("idle")
 
-	if building:
-		if build_ray_cast.is_colliding():
+
+	if build_ray_cast.is_colliding():
+		if build_spawn.get_child_count() > 0:
 			build_spawn.get_child(0).outOfRange = false
-			build_spawn.global_position = build_ray_cast.get_collision_point()
-			build_spawn.global_position.y += .01
-		else:
+		build_spawn.global_position = build_ray_cast.get_collision_point()
+		build_spawn.global_position.y += .01
+	else:
+		if build_spawn.get_child_count() > 0:
 			build_spawn.get_child(0).outOfRange = true
+	
+	
+	if !building:
+		if build_ray_cast.is_colliding():
+			var body = build_ray_cast.get_collider()
+			if highlightedBuildable != body.owner:
+				if highlightedBuildable != null: 
+					highlightedBuildable.SafeBox.hide()
+					highlightedBuildable = null
+				if body.owner is Buildable:
+					if body.owner.SafeBox != null:
+						body.owner.SafeBox.show()
+						highlightedBuildable = body.owner
+		else:
+			if highlightedBuildable != null:
+				highlightedBuildable.SafeBox.hide()
+		
 	move_and_slide()
 	
 	# Push other physics based objects
@@ -186,6 +205,7 @@ func handleInput():
 				var rot = buildable.global_rotation
 				build_spawn.remove_child(buildable)
 				build_ray_cast.get_collider().add_child(buildable)
+				print(build_ray_cast.get_collider().name)
 				buildable.global_position = pos
 				buildable.global_rotation = rot
 				selectedBuildable = null
@@ -218,15 +238,3 @@ func handleInput():
 				locked = true
 
 
-func _on_selection_area_body_entered(body):
-	if body.owner is Buildable:
-		if body.owner.SafeBox != null:
-			body.owner.SafeBox.show()
-			highlightedBuildable = body.owner
-
-
-func _on_selection_area_body_exited(body):
-	if body.owner is Buildable:
-		if body.owner.SafeBox != null:
-			body.owner.SafeBox.hide()
-			highlightedBuildable = null

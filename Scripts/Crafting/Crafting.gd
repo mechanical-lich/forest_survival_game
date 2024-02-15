@@ -8,6 +8,8 @@ var Plant1:PackedScene = load("res://Scenes/plant1.tscn")
 var Plant2:PackedScene = load("res://Scenes/plant2.tscn")
 var Lantern:PackedScene = load("res://Scenes/lantern.tscn")
 var Table:PackedScene = load("res://Scenes/table.tscn")
+var CabinSmall:PackedScene = load("res://Scenes/cabin-small.tscn")
+var CabinLarge:PackedScene = load("res://Scenes/cabin-large.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
@@ -76,5 +78,21 @@ func _on_table_button_pressed():
 	var table = Table.instantiate()
 	table.beingPlaced = true
 	player.build_spawn.add_child(table)
+	player.building = true
+	close()
+
+
+func _on_cabin_button_pressed():
+	var cabin = CabinSmall.instantiate()
+	cabin.beingPlaced = true
+	player.build_spawn.add_child(cabin)
+	player.building = true
+	close()
+
+
+func _on_cabin_large_button_pressed():
+	var cabin = CabinLarge.instantiate()
+	cabin.beingPlaced = true
+	player.build_spawn.add_child(cabin)
 	player.building = true
 	close()
