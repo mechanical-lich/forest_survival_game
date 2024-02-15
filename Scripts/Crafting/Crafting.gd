@@ -7,7 +7,7 @@ var Tent:PackedScene = load("res://Scenes/tent.tscn")
 var Plant1:PackedScene = load("res://Scenes/plant1.tscn")
 var Plant2:PackedScene = load("res://Scenes/plant2.tscn")
 var Lantern:PackedScene = load("res://Scenes/lantern.tscn")
-
+var Table:PackedScene = load("res://Scenes/table.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
@@ -45,7 +45,7 @@ func _on_tent_button_pressed():
 	player.build_spawn.add_child(tent)
 	player.building = true
 	player.ui_opened = false
-	visible = false
+	close()
 
 
 func _on_plant_1_button_pressed():
@@ -68,5 +68,13 @@ func _on_lantern_button_pressed():
 	var lantern = Lantern.instantiate()
 	lantern.beingPlaced = true
 	player.build_spawn.add_child(lantern)
+	player.building = true
+	close()
+
+
+func _on_table_button_pressed():
+	var table = Table.instantiate()
+	table.beingPlaced = true
+	player.build_spawn.add_child(table)
 	player.building = true
 	close()

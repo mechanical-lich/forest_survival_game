@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ctr0aaj37fa4o" path="res://Assets/Models/props/survival-all_farol.png" id="2_0mk07"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4ryof"]
-size = Vector3(0.437598, 0.522949, 0.418477)
+size = Vector3(0.519922, 0.734131, 0.549077)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80hvm"]
 albedo_color = Color(0, 1, 0, 1)
@@ -125,18 +125,17 @@ shadow_mesh = SubResource("ArrayMesh_rg21y")
 [sub_resource type="BoxShape3D" id="BoxShape3D_yw0aw"]
 size = Vector3(0.352722, 0.742188, 0.32251)
 
-[node name="Plant1" type="Node3D"]
+[node name="Lantern" type="Node3D"]
 script = ExtResource("1_vr1iw")
 
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.83301, 0.0380744, 0, -0.0380744, 0.83301, 0, 0, 0, 0.833879, 0.00391057, 0.238347, -0.000835016)
+transform = Transform3D(0.83301, 0.0380744, 0, -0.0380744, 0.83301, 0, 0, 0, 0.833879, 0.00280601, 0.326539, 0.0127053)
 shape = SubResource("BoxShape3D_4ryof")
 
 [node name="SafeBox" type="CSGBox3D" parent="."]
-transform = Transform3D(0.100235, 0, 0, 0, 0.639704, 0, 0, 0, 0.120084, -0.0143998, 0.34804, -0.00392733)
-visible = false
+transform = Transform3D(0.134869, 0, 0, 0, 0.641696, 0, 0, 0, 0.120458, -0.0143998, 0.34804, -0.00392733)
 transparency = 0.9
 size = Vector3(3.572, 1, 3.684)
 material = SubResource("StandardMaterial3D_80hvm")

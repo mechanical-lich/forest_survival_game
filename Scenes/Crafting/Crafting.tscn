@@ -58,8 +58,16 @@ offset_right = 590.0
 offset_bottom = 102.0
 text = "Lantern"
 
+[node name="TableButton" type="Button" parent="MarginContainer/TextureRect"]
+offset_left = 608.0
+offset_top = -2.0
+offset_right = 701.0
+offset_bottom = 101.0
+text = "Table"
+
 [connection signal="pressed" from="MarginContainer/TextureRect/BonfireButton" to="." method="_on_bonfire_button_pressed"]
 [connection signal="pressed" from="MarginContainer/TextureRect/TentButton" to="." method="_on_tent_button_pressed"]
 [connection signal="pressed" from="MarginContainer/TextureRect/Plant1Button" to="." method="_on_plant_1_button_pressed"]
 [connection signal="pressed" from="MarginContainer/TextureRect/Plant2Button" to="." method="_on_plant_2_button_pressed"]
 [connection signal="pressed" from="MarginContainer/TextureRect/LanternButton" to="." method="_on_lantern_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/TableButton" to="." method="_on_table_button_pressed"]

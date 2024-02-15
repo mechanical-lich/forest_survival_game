@@ -27,6 +27,7 @@ sky_cover_modulate = Color(0.203922, 0.203922, 0.203922, 1)
 sky_material = SubResource("ProceduralSkyMaterial_gxnhk")
 
 [sub_resource type="Environment" id="Environment_odrh6"]
+background_energy_multiplier = 1.44
 sky = SubResource("Sky_rfyi8")
 tonemap_mode = 2
 glow_enabled = true

@@ -3,6 +3,7 @@ class_name Buildable
 
 @onready var SafeBox:CSGBox3D = $SafeBox
 var validLocation: bool = true
+var outOfRange:bool = false
 var beingPlaced: bool = false
 @onready var collision_shape_3d:CollisionShape3D = $Mesh/StaticBody3D/CollisionShape3D
 
@@ -12,7 +13,7 @@ func _physics_process(delta):
 			collision_shape_3d.disabled = true
 		if !SafeBox.visible:
 			SafeBox.show()
-		if validLocation:
+		if validLocation and !outOfRange:
 			SafeBox.material.albedo_color = Color(0,1,0)
 		else:
 			SafeBox.material.albedo_color = Color(1,0,0)
@@ -20,6 +21,8 @@ func _physics_process(delta):
 		if collision_shape_3d != null:
 			collision_shape_3d.disabled = false	
 
+func canPlace() -> bool:
+	return validLocation and !outOfRange
 
 func _on_area_3d_body_entered(body):
 	if body.name != "Floor" and body != $Mesh/StaticBody3D:

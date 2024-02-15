@@ -47,7 +47,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_oky2g")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yw0aw"]
-size = Vector3(1, 0.969727, 1)
+size = Vector3(1, 0.993164, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80hvm"]
 albedo_color = Color(0, 1, 0, 1)
@@ -69,7 +69,7 @@ skeleton = NodePath("")
 [node name="StaticBody3D" type="StaticBody3D" parent="Mesh"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/StaticBody3D"]
-transform = Transform3D(0.999995, 0, 1.19371e-12, 0, 1, 0, -1.35003e-12, 0, 0.999995, 0, 0.32959, 0)
+transform = Transform3D(0.999993, 0, 1.7053e-12, 0, 1, 0, -1.91847e-12, 0, 0.999993, 0, 0.317871, 0)
 shape = SubResource("BoxShape3D_yw0aw")
 
 [node name="SafeBox" type="CSGBox3D" parent="."]

@@ -18,7 +18,10 @@ const JUMP_VELOCITY: float = 6
 @onready var rightHand:Node3D = get_node("Visuals/Armature_001/Skeleton3D/RightHandAttachment/Slot")
 @onready var build_spawn = $build_spawn
 @onready var camera_3d:Camera3D = $camera_mount/Camera3D
-@onready var head_camera:Camera3D = $Visuals/Armature_001/Skeleton3D/BoneAttachment3D/HeadCamera
+@onready var head_camera:Camera3D = $HeadCamera
+@onready var build_ray_cast:RayCast3D = $BuildRayCast
+@onready var camera_mount = $camera_mount
+@onready var visuals = $Visuals
 
 var Axe:PackedScene = load("res://Scenes/axe.tscn")
 var Bonfire:PackedScene = load("res://Scenes/bonfire.tscn")
@@ -32,6 +35,7 @@ var locked: bool = false
 var building: bool = false
 var highlightedBuildable: Buildable = null
 var selectedBuildable: Buildable = null
+
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -47,17 +51,16 @@ func _input(event):
 		
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * MOUSE_X_SENSITIVITY))
-		#var skel = get_node("Visuals/Armature_001/Skeleton3D")
-		#var id = skel.find_bone("mixamorig_Spine")
-		#var t = skel.get_bone_pose(id)
-		#t = t.rotated(Vector3(0.0, 1.0, 0.0), 0.1)
-		#skel.set_bone_pose_rotation(id, t)
-		
-		$camera_mount.rotate_x(deg_to_rad(-event.relative.y * MOUSE_Y_SENSITIVITY))
-		# Point camera at player
-		var target_pos = position
-		target_pos.y = target_pos.y + 1
-		#$camera_mount/Camera3D.look_at(target_pos)
+		if head_camera.current:
+			head_camera.rotate_x(deg_to_rad(-event.relative.y * MOUSE_Y_SENSITIVITY))
+		else:
+			visuals.rotate_y(-deg_to_rad(-event.relative.x * MOUSE_X_SENSITIVITY))
+			camera_mount.rotate_x(deg_to_rad(-event.relative.y * MOUSE_Y_SENSITIVITY))
+			build_ray_cast.rotate_x(deg_to_rad(-event.relative.y * MOUSE_Y_SENSITIVITY))
+			# Point camera at player
+			var target_pos:Vector3 = position
+			target_pos.y = target_pos.y + 2
+			$camera_mount/Camera3D.look_at(target_pos)
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -90,6 +93,8 @@ func _physics_process(delta):
 		var input_dir: Vector2 = Input.get_vector("Left", "Right", "Up", "Down")
 		var direction: Vector3 = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
+			visuals.global_rotation = global_rotation
+			#camera_mount.rotate_y(-rot)
 			# Set the move speed and animation
 			var anim = "walk"
 			if Input.is_action_pressed("Run"):
@@ -119,6 +124,13 @@ func _physics_process(delta):
 			if animationPlayer.current_animation != "idle":
 				animationPlayer.play("idle")
 
+	if building:
+		if build_ray_cast.is_colliding():
+			build_spawn.get_child(0).outOfRange = false
+			build_spawn.global_position = build_ray_cast.get_collision_point()
+			build_spawn.global_position.y += .01
+		else:
+			build_spawn.get_child(0).outOfRange = true
 	move_and_slide()
 	
 	# Push other physics based objects
@@ -165,18 +177,19 @@ func handleInput():
 	if Input.is_action_just_pressed("Build"):
 		if building == true:	
 			var buildable:Node3D = build_spawn.get_child(0)
-		
-			if buildable != null and buildable.validLocation:
+			
+			if buildable != null and buildable.canPlace() and build_ray_cast.is_colliding():
 				building = false
 				buildable.beingPlaced = false
 				buildable.SafeBox.hide()
 				var pos = buildable.global_position
 				var rot = buildable.global_rotation
 				build_spawn.remove_child(buildable)
-				owner.add_child(buildable)
+				build_ray_cast.get_collider().add_child(buildable)
 				buildable.global_position = pos
 				buildable.global_rotation = rot
 				selectedBuildable = null
+				return
 		else:
 			if highlightedBuildable != null:
 				selectedBuildable = highlightedBuildable
@@ -184,10 +197,11 @@ func handleInput():
 				selectedBuildable.SafeBox.show()
 				selectedBuildable.position = Vector3(0,0,0)
 				var rot = selectedBuildable.global_rotation
-				owner.remove_child(selectedBuildable)
+				selectedBuildable.get_parent_node_3d().remove_child(selectedBuildable)
 				build_spawn.add_child(selectedBuildable)
 				selectedBuildable.global_rotation = rot
 				building = true
+				return
 	
 	# Rotate Selected/Building item
 	if Input.is_action_just_pressed("Rotate_Selected_Left"):
