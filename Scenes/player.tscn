@@ -4198,7 +4198,7 @@ _data = {
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpn5h"]
 albedo_color = Color(0.114257, 0.586648, 0.687045, 0.784314)
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Persistent"]]
 collision_layer = 5
 floor_stop_on_slope = false
 script = ExtResource("1_xweq7")

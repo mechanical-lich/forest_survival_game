@@ -52,7 +52,7 @@ shadow_mesh = SubResource("ArrayMesh_8rnbt")
 [sub_resource type="BoxShape3D" id="BoxShape3D_yw0aw"]
 size = Vector3(1, 0.941895, 1)
 
-[node name="Plant2" type="Node3D"]
+[node name="Plant2" type="Node3D" groups=["Persistent"]]
 script = ExtResource("1_5vh34")
 
 [node name="Area3D" type="Area3D" parent="."]

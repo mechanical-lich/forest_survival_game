@@ -205,7 +205,7 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ladp8")
 
-[node name="Tree" type="Node3D"]
+[node name="Tree" type="Node3D" groups=["Persistent"]]
 script = ExtResource("1_34g60")
 
 [node name="Area3D" type="Area3D" parent="."]

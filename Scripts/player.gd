@@ -204,8 +204,16 @@ func handleInput():
 				var pos = buildable.global_position
 				var rot = buildable.global_rotation
 				build_spawn.remove_child(buildable)
-				build_ray_cast.get_collider().add_child(buildable)
-				print(build_ray_cast.get_collider().name)
+				
+				# Get root node
+				var p_node = build_ray_cast.get_collider()
+				while(p_node and (not p_node is Buildable )):
+					p_node = p_node.get_parent()
+				
+				if p_node == null:
+					p_node = $"../Map/Floor"
+				print(p_node)
+				p_node.add_child(buildable)
 				buildable.global_position = pos
 				buildable.global_rotation = rot
 				selectedBuildable = null

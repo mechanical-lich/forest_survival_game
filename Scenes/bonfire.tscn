@@ -51,7 +51,7 @@ size = Vector3(1.04834, 0.522949, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ffhn"]
 albedo_color = Color(0, 1, 0, 1)
 
-[node name="Bonfire" type="Node3D"]
+[node name="Bonfire" type="Node3D" groups=["Persistent"]]
 script = ExtResource("1_yemb8")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]

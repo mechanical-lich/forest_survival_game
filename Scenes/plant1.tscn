@@ -52,7 +52,7 @@ size = Vector3(1, 0.993164, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80hvm"]
 albedo_color = Color(0, 1, 0, 1)
 
-[node name="Plant1" type="Node3D"]
+[node name="Plant1" type="Node3D" groups=["Persistent"]]
 script = ExtResource("1_dkrse")
 
 [node name="Area3D" type="Area3D" parent="."]

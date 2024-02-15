@@ -1,6 +1,7 @@
-[gd_scene load_steps=38 format=3 uid="uid://d0ovvba58xass"]
+[gd_scene load_steps=39 format=3 uid="uid://d0ovvba58xass"]
 
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="1_37ngr"]
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_qwi6q"]
 [ext_resource type="PackedScene" uid="uid://8qgn1a7jh68g" path="res://Scenes/Crafting/Crafting.tscn" id="4_im4ls"]
 [ext_resource type="PackedScene" uid="uid://djakcq3842744" path="res://Scenes/player.tscn" id="5_ns258"]
 [ext_resource type="PackedScene" uid="uid://d2fll6ci5q1na" path="res://Scenes/axe.tscn" id="7_fa15g"]
@@ -102,6 +103,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_k22sp")
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_qwi6q")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_odrh6")
@@ -149,9 +151,23 @@ offset_right = 163.5
 offset_bottom = 90.0
 player = NodePath("../../Player")
 
+[node name="NoticeLabel" type="Label" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -29.0
+offset_top = -28.0
+offset_right = 29.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Saved"
+
 [node name="Map" type="Node3D" parent="."]
 
-[node name="Trees" type="Node3D" parent="Map"]
+[node name="Trees" type="Node3D" parent="Map" groups=["Persistent"]]
 
 [node name="Tree4" parent="Map/Trees" instance=ExtResource("8_qksp1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.521, 2.08165e-12, -16.939)
@@ -303,7 +319,7 @@ transform = Transform3D(-0.794383, 0, -0.607417, 0, 1, 0, 0.607417, 0, -0.794383
 [node name="Tree49" parent="Map/Trees" instance=ExtResource("8_qksp1")]
 transform = Transform3D(0.704597, 0, -0.709608, 0, 1, 0, 0.709608, 0, 0.704597, -60.0543, -4.52036, 44.6408)
 
-[node name="Floor" type="Node3D" parent="Map"]
+[node name="Floor" type="Node3D" parent="Map" groups=["Persistent"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -1, 2.08165e-12)
 script = ExtResource("18_fevhn")
 centered = true
