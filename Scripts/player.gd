@@ -17,15 +17,21 @@ const JUMP_VELOCITY: float = 6
 @onready var animationPlayer:AnimationPlayer = $Visuals.get_node("AnimationPlayer")
 @onready var rightHand:Node3D = get_node("Visuals/Armature_001/Skeleton3D/RightHandAttachment/Slot")
 @onready var build_spawn = $build_spawn
+@onready var camera_3d:Camera3D = $camera_mount/Camera3D
+@onready var head_camera:Camera3D = $Visuals/Armature_001/Skeleton3D/BoneAttachment3D/HeadCamera
 
 var Axe:PackedScene = load("res://Scenes/axe.tscn")
 var Bonfire:PackedScene = load("res://Scenes/bonfire.tscn")
+
+var ui_opened: bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var speed: float = 5.0
 var locked: bool = false
 var building: bool = false
+var highlightedBuildable: Buildable = null
+var selectedBuildable: Buildable = null
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -36,6 +42,9 @@ func _ready():
 			rightHand.add_child(i)
 	
 func _input(event):
+	if ui_opened:
+		return
+		
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * MOUSE_X_SENSITIVITY))
 		#var skel = get_node("Visuals/Armature_001/Skeleton3D")
@@ -53,48 +62,10 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-		
-	# Bonfire
-	if Input.is_action_just_pressed("Spawn_Bonfire"):
-		var bonefire = Bonfire.instantiate()
-		build_spawn.add_child(bonefire)
-		building = true
 	
-	# Equip Axe
-	if Input.is_action_just_pressed("Tool_1"):
-		if rightHand.get_child_count() == 0:
-			var a = Axe.instantiate()
-			rightHand.add_child(a)
-		else:
-			rightHand.remove_child(rightHand.get_child(0))
-	
-	# Chop on mouse click
-	if Input.is_action_pressed("Chop") and building == false:
-		if animationPlayer.current_animation != "chop":
-			animationPlayer.play("chop")
-			locked = true
-			
-	if Input.is_action_pressed("Cancel_Build") and building == true:
-		building = false
-		if build_spawn.get_child_count() > 0:
-			var c = build_spawn.get_child(0)
-			build_spawn.remove_child(c)
-			c.queue_free()	
-	
-	if Input.is_action_pressed("Build") and building == true:	
-		var bonfire:Node3D = build_spawn.get_child(0)
-
-		if bonfire.validLocation:
-			building = false
-			bonfire.beingPlaced = false
-			bonfire.SafeBox.hide()
-			var pos = bonfire.global_position
-			var rot = bonfire.global_rotation
-			build_spawn.remove_child(bonfire)
-			owner.add_child(bonfire)
-			bonfire.global_position = pos
-			bonfire.global_rotation = rot
-		
+	if !ui_opened:
+		handleInput()
+				
 	# Don't let the player move if they are chopping
 	if locked:
 		velocity.x = 0
@@ -162,3 +133,86 @@ func setChopping():
 	if axe != null:
 		axe.set_collision_layer_value(2,true)
 	
+func handleInput():
+	if Input.is_action_just_pressed("Switch_Camera"):
+		if head_camera.current:
+			camera_3d.current = true
+		else:
+			head_camera.current = true
+	# Bonfire
+	if Input.is_action_just_pressed("Spawn_Bonfire") and build_spawn.get_child_count() == 0:
+		var bonfire = Bonfire.instantiate()
+		bonfire.beingPlaced = true
+		build_spawn.add_child(bonfire)
+		building = true
+	
+	# Equip Axe
+	if Input.is_action_just_pressed("Tool_1"):
+		if rightHand.get_child_count() == 0:
+			var a = Axe.instantiate()
+			rightHand.add_child(a)
+		else:
+			rightHand.remove_child(rightHand.get_child(0))
+	
+			
+	if Input.is_action_just_pressed("Cancel_Build") and build_spawn.get_child_count() > 0:
+		building = false
+		var c = build_spawn.get_child(0)
+		build_spawn.remove_child(c)
+		c.queue_free()	
+	
+	
+	if Input.is_action_just_pressed("Build"):
+		if building == true:	
+			var buildable:Node3D = build_spawn.get_child(0)
+		
+			if buildable != null and buildable.validLocation:
+				building = false
+				buildable.beingPlaced = false
+				buildable.SafeBox.hide()
+				var pos = buildable.global_position
+				var rot = buildable.global_rotation
+				build_spawn.remove_child(buildable)
+				owner.add_child(buildable)
+				buildable.global_position = pos
+				buildable.global_rotation = rot
+				selectedBuildable = null
+		else:
+			if highlightedBuildable != null:
+				selectedBuildable = highlightedBuildable
+				selectedBuildable.beingPlaced = true
+				selectedBuildable.SafeBox.show()
+				selectedBuildable.position = Vector3(0,0,0)
+				var rot = selectedBuildable.global_rotation
+				owner.remove_child(selectedBuildable)
+				build_spawn.add_child(selectedBuildable)
+				selectedBuildable.global_rotation = rot
+				building = true
+	
+	# Rotate Selected/Building item
+	if Input.is_action_just_pressed("Rotate_Selected_Left"):
+		if build_spawn.get_child_count() > 0:
+			build_spawn.get_child(0).rotate_y(.1)
+	if Input.is_action_just_pressed("Rotate_Selected_Right"):
+		if build_spawn.get_child_count() > 0:
+			build_spawn.get_child(0).rotate_y(-.1)
+	# Chop on mouse click
+	if Input.is_action_just_pressed("Chop") and building == false and selectedBuildable == null:
+		if selectedBuildable == null:
+			if animationPlayer.current_animation != "chop":
+				animationPlayer.play("chop")
+				locked = true
+
+
+func _on_selection_area_body_entered(body):
+	if body.owner is Buildable:
+		if body.owner.SafeBox != null:
+			body.owner.SafeBox.show()
+			highlightedBuildable = body.owner
+
+
+func _on_selection_area_body_exited(body):
+	if body.owner is Buildable:
+		if body.owner.SafeBox != null:
+			body.owner.SafeBox.hide()
+			highlightedBuildable = null

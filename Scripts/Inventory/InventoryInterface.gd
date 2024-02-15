@@ -5,9 +5,10 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	visible = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	player_inventory.populate_item_grid(player.Inventory.slot_data)
+	if visible:
+		player_inventory.populate_item_grid(player.Inventory.slot_data)

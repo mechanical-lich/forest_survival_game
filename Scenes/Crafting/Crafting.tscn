@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://8qgn1a7jh68g"]
+
+[ext_resource type="Script" path="res://Scripts/Crafting/Crafting.gd" id="1_xfwer"]
+
+[node name="Crafting" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xfwer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+expand_mode = 1
+
+[node name="BonfireButton" type="Button" parent="MarginContainer/TextureRect"]
+layout_mode = 2
+offset_right = 93.0
+offset_bottom = 103.0
+text = "Bonfire"
+
+[node name="TentButton" type="Button" parent="MarginContainer/TextureRect"]
+layout_mode = 2
+offset_left = 105.0
+offset_top = 1.0
+offset_right = 198.0
+offset_bottom = 104.0
+text = "Tent"
+
+[node name="Plant1Button" type="Button" parent="MarginContainer/TextureRect"]
+offset_left = 204.0
+offset_top = -1.0
+offset_right = 297.0
+offset_bottom = 102.0
+text = "Plant 1"
+
+[node name="Plant2Button" type="Button" parent="MarginContainer/TextureRect"]
+offset_left = 304.0
+offset_top = -1.0
+offset_right = 397.0
+offset_bottom = 102.0
+text = "Plant 2"
+
+[node name="LanternButton" type="Button" parent="MarginContainer/TextureRect"]
+offset_left = 497.0
+offset_top = -1.0
+offset_right = 590.0
+offset_bottom = 102.0
+text = "Lantern"
+
+[connection signal="pressed" from="MarginContainer/TextureRect/BonfireButton" to="." method="_on_bonfire_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/TentButton" to="." method="_on_tent_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/Plant1Button" to="." method="_on_plant_1_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/Plant2Button" to="." method="_on_plant_2_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/LanternButton" to="." method="_on_lantern_button_pressed"]

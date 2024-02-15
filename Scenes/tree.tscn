@@ -245,7 +245,6 @@ skeleton = NodePath("")
 
 [node name="Mesh1" type="MeshInstance3D" parent="."]
 transform = Transform3D(5.2422, 8.22583, -2.20344, -7.88168, 5.66639, 2.40232, 3.22466, 0.477332, 9.45377, 2.08165e-12, -0.608298, 2.08165e-12)
-visible = false
 mesh = SubResource("ArrayMesh_rxwwf")
 skeleton = NodePath("")
 
